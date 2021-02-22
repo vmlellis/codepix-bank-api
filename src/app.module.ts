@@ -6,10 +6,13 @@ import { AppService } from './app.service';
 import { MyFirstController } from './controllers/my-first/my-first.controller';
 import { BankAccount } from './models/bank-account.model';
 import { BankAccountController } from './controllers/bank-account/bank-account.controller';
+import { ConsoleModule } from 'nestjs-console';
+import { FixturesCommand } from './fixtures/fixture.command';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ConsoleModule,
     TypeOrmModule.forRoot({
       type: process.env.TYPEORM_CONNECTION as any,
       host: process.env.TYPEORM_HOST,
@@ -22,6 +25,6 @@ import { BankAccountController } from './controllers/bank-account/bank-account.c
     TypeOrmModule.forFeature([BankAccount])
   ],
   controllers: [AppController, MyFirstController, BankAccountController],
-  providers: [AppService],
+  providers: [AppService, FixturesCommand],
 })
 export class AppModule {}

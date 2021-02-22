@@ -5,4 +5,6 @@
 # fi
 
 yarn install
+npm run typeorm migration:run
+npm run console fixtures
 yarn run start:dev
