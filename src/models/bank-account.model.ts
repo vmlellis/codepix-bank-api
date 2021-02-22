@@ -1,9 +1,7 @@
 import {BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
 import {v4 as uuidv4} from 'uuid'
 
-@Entity({
-  name: 'bank_accounts'
-})
+@Entity({ name: 'bank_accounts' })
 export class BankAccount {
   @PrimaryGeneratedColumn('uuid')
   id: string;

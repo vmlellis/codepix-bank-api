@@ -9,9 +9,7 @@ export class BankAccountController {
   constructor(
     @InjectRepository(BankAccount)
     private bankAccountRepo: Repository<BankAccount>
-  ) {
-
-  }
+  ) {}
 
   @Get()
   index() {
