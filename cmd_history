@@ -1,0 +1,46 @@
+yarn start
+
+npx @nestjs/cli new bank-api
+
+npm install -g @nestjs/cli
+
+nest generate controller controllers/my-first
+
+yarn run start:dev
+
+
+# Inside container
+
+yarn add typeorm @nestjs/typeorm pg
+
+yarn run typeorm migration:create -- -n CreateBankAccountsTable
+
+yarn run typeorm migration:run
+
+yarn run typeorm entity:create -- -n bank-account
+
+yarn add uuid
+
+yarn add @nestjs/confi
+
+nest generate controller controllers/bank-account
+
+yarn add nestjs-console commander@^5.1.0
+
+npm run console fixtures
+
+yarn run typeorm migration:create -- -n PixKeyTable
+
+yarn run typeorm migration:run
+
+yarn run typeorm entity:create -- -n pix-key
+
+nest generate controller controllers/pix-key
+
+yarn add @nestjs/microservices
+
+yarn add @grpc/proto-loader
+
+yarn add grpc
+
+yarn add class-validator class-transformer

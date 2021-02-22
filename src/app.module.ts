@@ -10,6 +10,8 @@ import { ConsoleModule } from 'nestjs-console';
 import { FixturesCommand } from './fixtures/fixture.command';
 import { PixKeyController } from './controllers/pix-key/pix-key.controller';
 import { PixKey } from './models/pix-key.model';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -24,7 +26,18 @@ import { PixKey } from './models/pix-key.model';
       database: process.env.TYPEORM_DATABASE,
       entities: [BankAccount, PixKey]
     }),
-    TypeOrmModule.forFeature([BankAccount, PixKey])
+    TypeOrmModule.forFeature([BankAccount, PixKey]),
+    ClientsModule.register([
+      {
+        name: 'CODEPIX_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          url: process.env.GRPC_URL,
+          package: 'github.com.vmlellis.codepix',
+          protoPath: [join(__dirname, 'protofiles/pixkey.proto')]
+        }
+      }
+    ])
   ],
   controllers: [AppController, MyFirstController, BankAccountController, PixKeyController],
   providers: [AppService, FixturesCommand],
