@@ -44,3 +44,9 @@ yarn add @grpc/proto-loader
 yarn add grpc
 
 yarn add class-validator class-transformer
+
+yarn run typeorm migration:create -- -n CreateTransactionsTable
+
+yarn run typeorm migration:run
+
+// To revert: yarn run typeorm migration:revert
