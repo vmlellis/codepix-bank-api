@@ -2,17 +2,21 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Inject,
   InternalServerErrorException,
+  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
+  Query,
   UnprocessableEntityException,
   ValidationPipe
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PixKeyDto } from 'src/dto/pix-key.dto';
+import { PixKeyExistsDto } from 'src/dto/pix-key-exists.dto';
 import { PixService } from 'src/grpc-types/pix-service.grpc';
 import { BankAccount } from 'src/models/bank-account.model';
 import { PixKey } from 'src/models/pix-key.model';
@@ -92,5 +96,21 @@ export class PixKeyController {
   }
 
   @Get('exists')
-  exists() {}
+  @HttpCode(204)
+  async exists(
+    @Query(new ValidationPipe({ errorHttpStatusCode: 422 }))
+    params: PixKeyExistsDto,
+  ) {
+    const pixService: PixService = this.client.getService('PixService');
+
+    try {
+      await pixService.find(params).toPromise();
+    } catch(e) {
+      if (e.details == "no key was found") {
+        throw new NotFoundException(e.details);
+      }
+
+      throw new InternalServerErrorException('Server not available')
+    }
+  }
 }
